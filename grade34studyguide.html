@@ -1,10 +1,108 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grade 3 & 4 Computing — Term 1 Study Guide & Review Portal</title>
+  <!-- Tailwind CSS for clean, responsive academic layout -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans for clean elementary legibility -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Base typography & smooth scrolling */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, .heading-font {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* 3D Flashcard Flip Animation */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .flashcard-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Clean Print Stylesheet so the Study Guide prints like an official academic handout */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+
+      header, nav, .no-print, #tab-flashcards, #tab-quiz, #print-banner-btn {
+        display: none !important;
+      }
+
+      #tab-study-guide {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .study-card {
+        box-shadow: none !important;
+        border: 1.5px solid #cbd5e1 !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 14pt !important;
+      }
+
+      .print-header-only {
+        display: block !important;
+        border-bottom: 2px solid #1e3a8a;
+        padding-bottom: 8pt;
+        margin-bottom: 14pt;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
   <!-- Print-only formal worksheet header -->
   <div class="hidden print-header-only">
     <div class="flex justify-between items-center">
       <div>
         <h1 class="text-xl font-bold text-slate-900">Grade 3 &amp; 4 Computing — End of Term 1 Study Guide</h1>
-        <p class="text-sm text-slate-600">Everything We Learned This Term: Computer Parts, Online Safety, Typing, Page Setup &amp; Formatting</p>
+        <p class="text-sm text-slate-600">Everything We Learned: Computer Parts, Online Safety, Typing, Page Setup &amp; Formatting</p>
       </div>
       <div class="text-right text-sm text-slate-700">
         <p><strong>Name:</strong> _________________________</p>
@@ -12,7 +110,77 @@
       </div>
     </div>
   </div>
-<!-- ... existing code ... -->
+
+  <!-- Top Academic Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 gap-4">
+        <!-- Brand / Class Title -->
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm shrink-0">
+            <!-- Monitor SVG Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <div>
+            <span class="inline-block text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">
+              Grades 3 &amp; 4 • Term 1 Review
+            </span>
+            <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+              Computing Study Portal
+            </h1>
+          </div>
+        </div>
+
+        <!-- 3 Interactive View Tabs -->
+        <nav aria-label="Main Portal Navigation" class="flex bg-slate-100 p-1.5 rounded-xl border border-slate-200/80 self-start md:self-auto w-full md:w-auto">
+          <button
+            id="btn-tab-guide"
+            onclick="switchTab('study-guide')"
+            class="tab-btn flex-1 md:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all bg-white text-indigo-700 shadow-sm"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            <span>Study Guide</span>
+          </button>
+
+          <button
+            id="btn-tab-flashcards"
+            onclick="switchTab('flashcards')"
+            class="tab-btn flex-1 md:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M7 10h10M7 14h6" />
+            </svg>
+            <span>Key Terms Flashcards</span>
+          </button>
+
+          <button
+            id="btn-tab-quiz"
+            onclick="switchTab('quiz')"
+            class="tab-btn flex-1 md:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Practice Test</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ===================================================================
+         TAB 1: COMPREHENSIVE STUDY GUIDE
+         =================================================================== -->
     <section id="tab-study-guide" class="space-y-8">
       <!-- Intro Banner & Quick Jump Links -->
       <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-2xl p-6 sm:p-8 text-white shadow-md no-print">
@@ -20,7 +188,7 @@
           <div class="space-y-2 max-w-2xl">
             <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">End of Term 1 Study Guide</h2>
             <p class="text-indigo-100 text-base leading-relaxed">
-              Welcome! Read through these 5 topics to review everything we learned this term. When you feel ready, flip through the <strong>Key Terms Flashcards</strong> or try the <strong>20-Question Practice Test</strong>!
+              Welcome! Read through these 5 units to review everything we learned this term. When you feel ready, test your memory with the <strong>Key Terms Flashcards</strong> or take the <strong>20-Question Practice Test</strong>!
             </p>
           </div>
           <div class="flex flex-wrap gap-3 shrink-0">
@@ -41,7 +209,7 @@
         <div class="mt-6 pt-5 border-t border-indigo-500/50 flex flex-wrap gap-2 text-xs sm:text-sm font-medium">
           <span class="text-indigo-200 py-1 mr-1">Jump to:</span>
           <a href="#unit-1" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 1: Computer Parts</a>
-          <a href="#unit-2" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 2: Staying Safe Online</a>
+          <a href="#unit-2" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 2: Online Safety</a>
           <a href="#unit-3" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 3: Typing &amp; Shortcuts</a>
           <a href="#unit-4" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 4: Page Setup</a>
           <a href="#unit-5" class="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-lg transition">Unit 5: Lists, Tables &amp; Pictures</a>
@@ -54,7 +222,7 @@
           <span class="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center text-sm">1</span>
           <div>
             <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 1: Computer Parts (Hardware)</h3>
-            <p class="text-xs sm:text-sm text-slate-600">All the parts of a computer you can see and touch</p>
+            <p class="text-xs sm:text-sm text-slate-600">All the physical parts of a computer you can see and touch</p>
           </div>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -63,18 +231,18 @@
             <h4 class="text-sm font-bold uppercase tracking-wider text-blue-700">Inside the Computer</h4>
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70 space-y-3">
               <div>
-                <p class="font-bold text-slate-900">The Computer's Brain (CPU)</p>
-                <p class="text-sm text-slate-600">The little chip inside that thinks, does math, and tells all the other parts what to do.</p>
+                <p class="font-bold text-slate-900">CPU (The Computer's Brain)</p>
+                <p class="text-sm text-slate-600">The <strong>"brain"</strong> of the computer. It thinks, follows your clicks, and tells all the other parts what to do.</p>
               </div>
               <hr class="border-slate-200" />
               <div>
-                <p class="font-bold text-slate-900">Working Memory (RAM)</p>
-                <p class="text-sm text-slate-600">Short-term memory used while you are playing or typing right now. When you turn the computer off, this memory wipes clean!</p>
+                <p class="font-bold text-slate-900">RAM (Short-Term Memory)</p>
+                <p class="text-sm text-slate-600"><strong>Working memory</strong> used while your apps are open right now. Everything in RAM gets wiped clean when you turn the computer off.</p>
               </div>
               <hr class="border-slate-200" />
               <div>
-                <p class="font-bold text-slate-900">Saving Space (Hard Drive)</p>
-                <p class="text-sm text-slate-600">Long-term memory—just like a backpack or toy box—that keeps your stories, pictures, and games safe even when the computer is turned off.</p>
+                <p class="font-bold text-slate-900">Storage (Hard Drive / SSD)</p>
+                <p class="text-sm text-slate-600"><strong>Long-term memory</strong> (like a digital backpack). It keeps your stories, pictures, and games saved even when the power is turned off.</p>
               </div>
             </div>
           </div>
@@ -87,7 +255,7 @@
                 <div class="flex items-center gap-2 font-bold text-emerald-900 mb-2">
                   <span>➡️ Input Parts</span>
                 </div>
-                <p class="text-xs text-emerald-800 mb-3">Parts that send your words, clicks, or voice <strong>INTO</strong> the computer:</p>
+                <p class="text-xs text-emerald-800 mb-3">Tools that send information <strong>INTO</strong> the computer:</p>
                 <ul class="text-sm text-slate-700 space-y-1.5 list-disc list-inside">
                   <li><strong>Keyboard</strong> (types letters)</li>
                   <li><strong>Mouse / Trackpad</strong> (clicks)</li>
@@ -100,12 +268,12 @@
                 <div class="flex items-center gap-2 font-bold text-amber-900 mb-2">
                   <span>⬅️ Output Parts</span>
                 </div>
-                <p class="text-xs text-amber-800 mb-3">Parts that bring pictures, sound, or paper <strong>OUT</strong> of the computer to you:</p>
+                <p class="text-xs text-amber-800 mb-3">Tools that send information <strong>OUT</strong> of the computer to you:</p>
                 <ul class="text-sm text-slate-700 space-y-1.5 list-disc list-inside">
                   <li><strong>Monitor / Screen</strong> (shows pictures)</li>
                   <li><strong>Printer</strong> (prints onto paper)</li>
                   <li><strong>Speakers</strong> (plays sound)</li>
-                  <li><strong>Headphones</strong> (just for your ears)</li>
+                  <li><strong>Headphones</strong> (private sound)</li>
                 </ul>
               </div>
             </div>
@@ -119,16 +287,16 @@
           <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">2</span>
           <div>
             <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 2: Staying Safe &amp; Kind Online</h3>
-            <p class="text-xs sm:text-sm text-slate-600">How to stay safe, protect your secrets, and be a good friend on the internet</p>
+            <p class="text-xs sm:text-sm text-slate-600">Smart rules for keeping your private info safe and being a good digital friend</p>
           </div>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70 space-y-2">
             <h4 class="font-bold text-slate-900 flex items-center gap-2">
-              <span class="text-rose-600">🔒</span> Private Facts About You (PII)
+              <span class="text-rose-600">🔒</span> Private Information (PII)
             </h4>
             <p class="text-sm text-slate-600">
-              Private facts that tell strangers who you are or where you live. <strong>Never share these online!</strong>
+              Private facts about you that tell strangers who you are or where you live. <strong>Never share these online!</strong>
             </p>
             <div class="bg-white rounded-lg p-3 border border-slate-200 text-xs sm:text-sm text-slate-700">
               <strong>Keep Secret:</strong> Your full name, home address, phone number, school name, birthday, and passwords.
@@ -137,10 +305,10 @@
 
           <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70 space-y-2">
             <h4 class="font-bold text-slate-900 flex items-center gap-2">
-              <span class="text-indigo-600">🔑</span> Super-Strong Secret Passwords
+              <span class="text-indigo-600">🔑</span> Strong Passwords
             </h4>
             <p class="text-sm text-slate-600">
-              A strong password works like a sturdy lock on your bedroom door. Make it long and mix <strong>words, numbers, and symbols</strong>.
+              A strong password is like a strong lock on your front door. Make it long and mix <strong>words, numbers, and symbols</strong>.
             </p>
             <div class="bg-white rounded-lg p-3 border border-slate-200 text-xs sm:text-sm">
               <span class="text-rose-600 font-semibold">Easy to Guess:</span> 123456 or password<br />
@@ -150,23 +318,23 @@
 
           <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70 space-y-2">
             <h4 class="font-bold text-slate-900 flex items-center gap-2">
-              <span class="text-amber-600">👣</span> Your Online Trail (Digital Footprint)
+              <span class="text-amber-600">👣</span> Digital Footprint
             </h4>
             <p class="text-sm text-slate-600">
-              The trail of clues you leave behind when you go online—like websites you visit, videos you watch, and photos or comments you share. Always think before you post because your online trail can stay there forever!
+              The trail of clues you leave behind when you use the internet—like websites you visit, videos you watch, and photos or comments you post. Think before you post because a digital footprint can stay online forever!
             </p>
           </div>
 
           <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70 space-y-2">
             <h4 class="font-bold text-slate-900 flex items-center gap-2">
-              <span class="text-blue-600">🛡️</span> Being Kind Online: Upstander vs. Bystander
+              <span class="text-blue-600">🛡️</span> Cyberbullying: Upstander vs. Bystander
             </h4>
             <p class="text-sm text-slate-600">
               <strong>Cyberbullying</strong> is using a computer, tablet, or phone to be mean to someone on purpose.
             </p>
             <ul class="text-sm text-slate-700 space-y-1">
-              <li>• <strong>Bystander:</strong> Watches mean things happen online and does nothing.</li>
-              <li>• <strong>Upstander:</strong> Stands up to help! Says kind words to the person being hurt and tells a trusted adult right away.</li>
+              <li>• <strong>Bystander:</strong> Sees mean behavior online and does nothing to help.</li>
+              <li>• <strong>Upstander:</strong> Stands up to help! Says something kind to the person being hurt and tells a trusted adult right away.</li>
             </ul>
           </div>
         </div>
@@ -178,7 +346,7 @@
           <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm">3</span>
           <div>
             <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 3: Typing, Shortcuts &amp; Naming Files</h3>
-            <p class="text-xs sm:text-sm text-slate-600">Typing neatly, saving time with key tricks, and naming your saved work</p>
+            <p class="text-xs sm:text-sm text-slate-600">Typing neatly, saving time with keyboard tricks, and naming saved work</p>
           </div>
         </div>
         <div class="p-6 space-y-6">
@@ -186,31 +354,31 @@
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
               <h4 class="font-bold text-slate-900 mb-1">Home Row Keys</h4>
               <p class="text-sm text-slate-600">
-                The home base where your fingers rest: <strong>A S D F</strong> (left hand) and <strong>J K L ;</strong> (right hand). The <strong>F</strong> and <strong>J</strong> keys have tiny bumps so your pointer fingers can find them without looking!
+                Where your fingers rest when typing: <strong>A S D F</strong> (left hand) and <strong>J K L ;</strong> (right hand). The <strong>F</strong> and <strong>J</strong> keys have tiny raised bumps so your pointer fingers can find them without looking!
               </p>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
               <h4 class="font-bold text-slate-900 mb-1">Shift vs. Caps Lock</h4>
               <p class="text-sm text-slate-600">
-                Hold <strong>Shift</strong> to type just <strong>ONE</strong> capital letter or a top symbol (like <strong>!</strong> or <strong>?</strong>). Only tap <strong>Caps Lock</strong> when typing an entire word or title in ALL CAPITAL LETTERS.
+                Hold <strong>Shift</strong> to type just <strong>ONE</strong> capital letter or a top symbol (like <strong>!</strong> or <strong>?</strong>). Only tap <strong>Caps Lock</strong> when typing a whole word or title in ALL CAPITAL LETTERS.
               </p>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-1">Spaces &amp; Smart File Names</h4>
+              <h4 class="font-bold text-slate-900 mb-1">Spaces &amp; File Names</h4>
               <p class="text-sm text-slate-600 mb-2">
-                <strong>Spacing Rule:</strong> Put one space <strong>AFTER</strong> a period or comma, never before.
+                <strong>Space Rule:</strong> Put one space <strong>AFTER</strong> a period or comma, never before it.
               </p>
               <p class="text-sm text-slate-600">
-                <strong>File Naming:</strong> Use clear names with no spaces, like <span class="font-semibold text-indigo-700">Topic_Name_Date</span> (Example: <em>Tables_Maya_Nov16</em>).
+                <strong>File Names:</strong> Name files clearly with no spaces, like <span class="font-semibold text-indigo-700">Topic_Name_Date</span> (Example: <em>Tables_Maya_Nov16</em>).
               </p>
             </div>
           </div>
 
           <!-- Keyboard Shortcuts Grid -->
           <div>
-            <h4 class="text-sm font-bold uppercase tracking-wider text-indigo-700 mb-3">Helpful Keyboard Shortcuts (Key Tricks)</h4>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-indigo-700 mb-3">Helpful Keyboard Shortcuts</h4>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3 text-center">
                 <span class="inline-block bg-white border border-slate-300 shadow-xs px-2.5 py-1 rounded-md font-bold text-xs text-slate-800 mb-1.5">Ctrl + B</span>
@@ -235,47 +403,47 @@
               <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3 text-center">
                 <span class="inline-block bg-white border border-slate-300 shadow-xs px-2.5 py-1 rounded-md font-bold text-xs text-slate-800 mb-1.5">Ctrl + A</span>
                 <p class="text-sm font-bold text-slate-900">Select All</p>
-                <p class="text-xs text-slate-500">Highlights everything</p>
+                <p class="text-xs text-slate-500">Highlights whole page</p>
               </div>
               <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3 text-center">
                 <span class="inline-block bg-white border border-slate-300 shadow-xs px-2.5 py-1 rounded-md font-bold text-xs text-slate-800 mb-1.5">Ctrl + C / V</span>
                 <p class="text-sm font-bold text-slate-900">Copy &amp; Paste</p>
-                <p class="text-xs text-slate-500">Copy &amp; place words</p>
+                <p class="text-xs text-slate-500">Copy &amp; put in new spot</p>
               </div>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- UNIT 4: Page Setup & How Your Page Looks -->
+      <!-- UNIT 4: Setting Up Your Page -->
       <article id="unit-4" class="study-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="bg-purple-50/80 border-b border-purple-100 px-6 py-4 flex items-center gap-3">
           <span class="w-8 h-8 rounded-lg bg-purple-600 text-white font-bold flex items-center justify-center text-sm">4</span>
           <div>
-            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 4: Page Setup &amp; How Your Page Looks</h3>
-            <p class="text-xs sm:text-sm text-slate-600">Choosing tall or wide paper, white edge borders, headers, and footers</p>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 4: Setting Up Your Page</h3>
+            <p class="text-xs sm:text-sm text-slate-600">Choosing which way the paper turns, page borders, headers, and footers</p>
           </div>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-4">
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-2">Page Direction (Orientation)</h4>
+              <h4 class="font-bold text-slate-900 mb-2">Page Orientation (Which Way the Paper Turns)</h4>
               <div class="grid grid-cols-2 gap-3 text-sm">
                 <div class="bg-white p-3 rounded-lg border border-slate-200">
-                  <p class="font-bold text-purple-700">📄 Tall Page (Portrait)</p>
-                  <p class="text-xs text-slate-600 mt-1">Standing up tall (taller than it is wide). Best for stories, letters, and reports.</p>
+                  <p class="font-bold text-purple-700">📄 Portrait (Tall)</p>
+                  <p class="text-xs text-slate-600 mt-1">Standing up tall (taller than it is wide). Best for stories, letters, and book reports.</p>
                 </div>
                 <div class="bg-white p-3 rounded-lg border border-slate-200">
-                  <p class="font-bold text-purple-700">🖼️ Wide Page (Landscape)</p>
-                  <p class="text-xs text-slate-600 mt-1">Turned sideways (wider than it is tall). Best for signs, posters, and awards.</p>
+                  <p class="font-bold text-purple-700">🖼️ Landscape (Wide)</p>
+                  <p class="text-xs text-slate-600 mt-1">Turned sideways wide (wider than it is tall). Best for door signs, awards, and wide charts.</p>
                 </div>
               </div>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-1">White Edge Borders (Margins)</h4>
+              <h4 class="font-bold text-slate-900 mb-1">Margins (The White Safety Border)</h4>
               <p class="text-sm text-slate-600">
-                The blank white space around the edges of a page so your words don't get cut off when you print. <strong>Normal Margins</strong> leave 1 inch of white space; <strong>Narrow Margins</strong> leave half an inch (0.5 in) so big tables fit better.
+                The blank white border around the edges of a page so words don't get cut off when printed. <strong>Normal Margins</strong> = 1 inch on all sides; <strong>Narrow Margins</strong> = 0.5 inches (gives extra space for big tables).
               </p>
             </div>
           </div>
@@ -291,15 +459,15 @@
             <!-- Visual Mini Page Diagram -->
             <div class="bg-white border-2 border-slate-300 rounded-lg p-3 shadow-xs space-y-2 text-xs">
               <div class="bg-purple-50 border border-dashed border-purple-300 rounded px-3 py-2 flex justify-between text-purple-900 font-semibold">
-                <span>HEADER (Top Edge): Name &amp; Date</span>
+                <span>HEADER (Top of Page): Name &amp; Date</span>
                 <span>Shows on every page</span>
               </div>
               <div class="py-4 px-3 text-center text-slate-400 italic">
                 Main Page Area (Where your story or table goes)
               </div>
               <div class="bg-purple-50 border border-dashed border-purple-300 rounded px-3 py-2 flex justify-between text-purple-900 font-semibold">
-                <span>FOOTER (Bottom Edge)</span>
-                <span>Page 1 (Page Numbers)</span>
+                <span>FOOTER (Bottom of Page)</span>
+                <span>Page 1 (Automatic Page Numbers)</span>
               </div>
             </div>
           </div>
@@ -312,32 +480,32 @@
           <span class="w-8 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-sm">5</span>
           <div>
             <h3 class="text-lg sm:text-xl font-bold text-slate-900">Unit 5: Lists, Tables &amp; Pictures</h3>
-            <p class="text-xs sm:text-sm text-slate-600">Making your work look neat, organized, and fun to read</p>
+            <p class="text-xs sm:text-sm text-slate-600">Making your schoolwork look neat, organized, and easy to read</p>
           </div>
         </div>
         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-4">
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-1">Lining Up Your Words (Alignment)</h4>
+              <h4 class="font-bold text-slate-900 mb-1">Text Alignment (Where Words Line Up)</h4>
               <ul class="text-sm text-slate-600 space-y-1">
-                <li>• <strong>Left Side:</strong> Used for normal stories and paragraphs.</li>
-                <li>• <strong>Middle (Center):</strong> Used for big titles at the top of a page.</li>
-                <li>• <strong>Right Side:</strong> Often used for the date at the top of a page.</li>
+                <li>• <strong>Left-Aligned:</strong> Used for regular stories and paragraphs.</li>
+                <li>• <strong>Centered:</strong> Used for titles right in the middle at the top.</li>
+                <li>• <strong>Right-Aligned:</strong> Often used for the date in a header.</li>
               </ul>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-1">Bullet Points vs. Numbered Lists</h4>
+              <h4 class="font-bold text-slate-900 mb-1">Bulleted Lists vs. Numbered Lists</h4>
               <ul class="text-sm text-slate-600 space-y-1.5">
-                <li>• <strong>Bullet Points (•):</strong> Use when order does <strong>NOT</strong> matter (like a camping packing list or favorite foods).</li>
-                <li>• <strong>Numbered List (1, 2, 3):</strong> Use when order <strong>DOES</strong> matter (like recipe steps or your Top 3 favorite games).</li>
+                <li>• <strong>Bulleted List (•):</strong> Use when order does <strong>NOT</strong> matter (example: a packing list or favorite snacks).</li>
+                <li>• <strong>Numbered List (1, 2, 3):</strong> Use when order <strong>DOES</strong> matter (example: recipe steps or Top 3 favorites).</li>
               </ul>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-1">Line Spacing &amp; Indenting</h4>
+              <h4 class="font-bold text-slate-900 mb-1">Line Spacing &amp; Paragraph Indents</h4>
               <ul class="text-sm text-slate-600 space-y-1.5">
-                <li>• <strong>Double Spacing (2.0):</strong> Leaves extra breathing room between lines of words so your teacher can read easily.</li>
+                <li>• <strong>Double Spacing (2.0):</strong> Adds extra space between lines so your teacher can read easily and write notes.</li>
                 <li>• <strong>Indent Rule:</strong> Press the <strong>Tab</strong> key <strong>ONCE</strong> at the start of a paragraph (never press Spacebar 5 times!).</li>
               </ul>
             </div>
@@ -345,36 +513,62 @@
 
           <div class="space-y-4">
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-2">Tables (A Neat Grid of Boxes)</h4>
+              <h4 class="font-bold text-slate-900 mb-2">Tables (Grids Made of Boxes)</h4>
               <p class="text-sm text-slate-600 mb-2">
-                A table sorts facts into neat boxes (just like a class schedule):
+                A table sorts facts into neat boxes (like your class schedule):
               </p>
               <ul class="text-sm text-slate-700 space-y-1">
-                <li>• <strong>Columns:</strong> Go straight <strong>up and down</strong> (like tall pillars).</li>
-                <li>• <strong>Rows:</strong> Go flat <strong>side to side</strong> (like rows of seats).</li>
-                <li>• <strong>Cells:</strong> Each little box where you type your words.</li>
+                <li>• <strong>Columns:</strong> Go straight <strong>up and down</strong>.</li>
+                <li>• <strong>Rows:</strong> Go flat <strong>side to side</strong>.</li>
+                <li>• <strong>Cells:</strong> Each little single box where a column and row meet.</li>
                 <li>• <strong>Table Tip:</strong> Press <strong>Tab</strong> to jump smoothly to the next box!</li>
               </ul>
             </div>
 
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/70">
-              <h4 class="font-bold text-slate-900 mb-2">Pictures &amp; Wrap Text</h4>
+              <h4 class="font-bold text-slate-900 mb-2">Pictures &amp; Text Wrapping</h4>
               <ul class="text-sm text-slate-600 space-y-1.5">
-                <li>• <strong>Corner Dots Rule:</strong> Always drag one of the <strong>4 corner dots (handles)</strong> when making a picture bigger or smaller so it doesn't look stretched or squished!</li>
-                <li>• <strong>Wrap Text:</strong> Lets your words wrap neatly around a picture just like a storybook or magazine.</li>
+                <li>• <strong>Corner Handles Rule:</strong> Always drag one of the <strong>4 corner handles</strong> when making a picture bigger or smaller so it doesn't look stretched or squished!</li>
+                <li>• <strong>Wrap Text:</strong> Lets your sentences flow neatly around the side of a picture like a magazine page.</li>
               </ul>
             </div>
           </div>
         </div>
       </article>
-<!-- ... existing code ... -->
+
+      <!-- Bottom Call-to-Action Card -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs no-print">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Finished reading the Study Guide?</h3>
+          <p class="text-sm text-slate-600">Practice your vocabulary with flashcards or take the 20-question practice quiz!</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button
+            onclick="switchTab('flashcards')"
+            class="px-4 py-2.5 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold text-sm transition cursor-pointer"
+          >
+            Go to Flashcards →
+          </button>
+          <button
+            onclick="switchTab('quiz')"
+            class="px-4 py-2.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 font-semibold text-sm shadow-xs transition cursor-pointer"
+          >
+            Start Practice Test →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 2: INTERACTIVE KEY TERMS FLASHCARDS
+         =================================================================== -->
     <section id="tab-flashcards" class="hidden space-y-6">
       <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h2 class="text-2xl font-extrabold text-slate-900">Key Terms Flashcards</h2>
             <p class="text-sm text-slate-600 mt-1">
-              Click any card (or press <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs font-semibold">Space</kbd>) to flip it over and read what it means!
+              Click any card (or press <kbd class="px-1.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs font-semibold">Space</kbd>) to flip it over and check what it means!
             </p>
           </div>
           <div class="flex items-center gap-2">
@@ -385,7 +579,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              <span>Mix Up Cards</span>
+              <span>Shuffle Cards</span>
             </button>
           </div>
         </div>
@@ -413,9 +607,9 @@
           <div id="flashcard-inner" onclick="flipCard()" class="flashcard-inner">
             <!-- Front Face (Term) -->
             <div class="flashcard-face bg-white border-2 border-indigo-200 shadow-md text-center">
-              <span class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Key Term</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Key Word</span>
               <h3 id="fc-front-term" class="text-2xl sm:text-4xl font-extrabold text-slate-900">
-                The Computer's Brain (CPU)
+                CPU (The Computer's Brain)
               </h3>
               <p class="mt-6 text-xs sm:text-sm text-slate-400 flex items-center gap-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -424,12 +618,96 @@
                 Click card to see what it means
               </p>
             </div>
-<!-- ... existing code ... -->
+
+            <!-- Back Face (Kid-Friendly Definition) -->
+            <div class="flashcard-face flashcard-back bg-indigo-600 text-white shadow-md text-center">
+              <span class="text-xs font-bold uppercase tracking-widest text-indigo-200 mb-3">What It Means</span>
+              <p id="fc-back-def" class="text-lg sm:text-xl font-medium leading-relaxed max-w-lg">
+                The "brain" of the computer that thinks and follows your instructions.
+              </p>
+              <p id="fc-back-example" class="mt-4 text-xs sm:text-sm bg-indigo-700/70 px-4 py-2 rounded-xl text-indigo-100">
+                Example: Tells the screen what to show when you click!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="mt-6 flex items-center justify-between gap-4">
+          <button
+            onclick="prevCard()"
+            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-semibold text-sm shadow-xs transition cursor-pointer"
+          >
+            <span>← Previous</span>
+          </button>
+
+          <button
+            onclick="flipCard()"
+            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 font-bold text-sm transition cursor-pointer"
+          >
+            <span>Flip Card</span>
+          </button>
+
+          <button
+            onclick="nextCard()"
+            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-xs transition cursor-pointer"
+          >
+            <span>Next →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         TAB 3: 20-QUESTION INTERACTIVE PRACTICE TEST
+         =================================================================== -->
+    <section id="tab-quiz" class="hidden space-y-6">
+      <!-- Quiz Intro & Score Header -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">End of Term 1 Practice Test</h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Answer all <strong>20 questions</strong> covering Units 1 through 5. Click an answer to check right away!
+          </p>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-xl px-4 py-2 text-center">
+            <span class="block text-xs font-bold uppercase text-indigo-600">Score</span>
+            <span id="live-score-badge" class="text-lg font-extrabold text-indigo-900">0 / 20</span>
+          </div>
+          <button
+            onclick="resetQuiz()"
+            class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm transition cursor-pointer"
+          >
+            Restart Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Questions Container -->
+      <div id="quiz-questions-container" class="space-y-5">
+        <!-- 20 questions rendered dynamically via JavaScript -->
+      </div>
+
+      <!-- Submit / Final Scorecard Banner -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm text-center space-y-4">
+        <div id="quiz-incomplete-msg" class="space-y-3">
+          <p class="text-slate-700 font-medium">
+            Answered <strong id="answered-count-text" class="text-indigo-700">0</strong> out of <strong>20</strong> questions so far.
+          </p>
+          <button
+            onclick="showFinalScorecard()"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base shadow-sm transition cursor-pointer"
+          >
+            <span>See My Final Scorecard</span>
+          </button>
+        </div>
+
         <!-- Final Scorecard Results (Revealed on click or completion) -->
         <div id="final-scorecard" class="hidden text-left space-y-6">
           <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-indigo-200">You Finished the Practice Quiz!</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-200">Practice Test Finished</span>
               <h3 id="final-grade-headline" class="text-2xl sm:text-3xl font-extrabold mt-1">Great Job!</h3>
               <p id="final-grade-subtext" class="text-indigo-100 text-sm mt-1">Here is how you did across all 5 units.</p>
             </div>
@@ -442,7 +720,7 @@
 
           <!-- Topic-by-Topic Breakdown -->
           <div>
-            <h4 class="text-base font-bold text-slate-900 mb-3">How You Did on Each Topic</h4>
+            <h4 class="text-base font-bold text-slate-900 mb-3">How You Did in Each Unit</h4>
             <div id="topic-breakdown-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <!-- Populated by JS -->
             </div>
@@ -453,66 +731,112 @@
               onclick="resetQuiz()"
               class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition cursor-pointer"
             >
-              Try the Practice Quiz Again
+              Try Practice Test Again
             </button>
           </div>
         </div>
       </div>
     </section>
-<!-- ... existing code ... -->
+
+  </main>
+
+  <!-- Academic Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 no-print">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-500">
+      <p><strong>Grade 3 &amp; 4 Computing</strong> • Term 1 Study Guide &amp; Review Portal</p>
+      <p>Tip: Click <span class="font-semibold text-slate-700">Print Study Guide</span> on Tab 1 to print a neat paper study sheet.</p>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       JAVASCRIPT: TABS, 24 FLASHCARDS & 20-QUESTION PRACTICE TEST LOGIC
+       ===================================================================== -->
+  <script>
     /* ---------------------------------------------------------------------
-       2. FLASHCARDS DATA (24 Kid-Friendly Cards Across All 5 Units)
+       1. TAB NAVIGATION LOGIC
+       --------------------------------------------------------------------- */
+    function switchTab(tabName) {
+      const sections = ['study-guide', 'flashcards', 'quiz'];
+      sections.forEach(sec => {
+        const el = document.getElementById('tab-' + sec);
+        if (el) el.classList.toggle('hidden', sec !== tabName);
+      });
+
+      // Update active button styles
+      const btnMap = {
+        'study-guide': document.getElementById('btn-tab-guide'),
+        'flashcards': document.getElementById('btn-tab-flashcards'),
+        'quiz': document.getElementById('btn-tab-quiz')
+      };
+
+      Object.keys(btnMap).forEach(key => {
+        const btn = btnMap[key];
+        if (!btn) return;
+        if (key === tabName) {
+          btn.classList.add('bg-white', 'text-indigo-700', 'shadow-sm');
+          btn.classList.remove('text-slate-600', 'hover:text-slate-900');
+        } else {
+          btn.classList.remove('bg-white', 'text-indigo-700', 'shadow-sm');
+          btn.classList.add('text-slate-600', 'hover:text-slate-900');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ---------------------------------------------------------------------
+       2. FLASHCARDS DATA (24 Cards Across All 5 Units)
        --------------------------------------------------------------------- */
     const allFlashcards = [
       // Computer Parts
       {
         category: "Computer Parts",
-        term: "The Computer's Brain (CPU)",
-        definition: "The little chip inside the computer that thinks, does math, and tells all the other parts what to do.",
-        example: "Every time you click or type, the CPU figures out what to do next!"
+        term: "CPU (The Computer's Brain)",
+        definition: "The 'brain' of the computer that thinks, follows your clicks, and tells other parts what to do.",
+        example: "Every time you click or type, the CPU figures out what to do next."
       },
       {
         category: "Computer Parts",
-        term: "Working Memory (RAM)",
-        definition: "Short-term memory used while you are playing or typing right now. When you turn the computer off, this memory wipes clean!",
-        example: "Just like keeping your open books on your desk while you work."
+        term: "RAM (Short-Term Memory)",
+        definition: "Working memory used while your apps are open right now. It clears out when you turn the computer off.",
+        example: "Like a desk space where you keep open books while working."
       },
       {
         category: "Computer Parts",
-        term: "Saving Space (Hard Drive)",
-        definition: "Long-term memory—like a backpack or toy box—that keeps your stories and pictures safe even when the computer is turned off.",
-        example: "Where your saved stories, drawings, and games live safely."
+        term: "Storage (Hard Drive / SSD)",
+        definition: "Long-term memory that keeps your files saved even when the power is turned off.",
+        example: "Where your saved stories, pictures, and games stay safe."
       },
       {
         category: "Computer Parts",
         term: "Input Parts",
-        definition: "Parts that send your words, clicks, or voice INTO the computer.",
+        definition: "Tools that send information INTO the computer from you.",
         example: "Keyboard, Mouse, Microphone, and Webcam."
       },
       {
         category: "Computer Parts",
         term: "Output Parts",
-        definition: "Parts that bring pictures, sound, or paper OUT of the computer to you.",
+        definition: "Tools that send information OUT of the computer to you.",
         example: "Monitor (Screen), Printer, Speakers, and Headphones."
       },
 
       // Online Safety
       {
         category: "Online Safety",
-        term: "Private Facts About You (PII)",
-        definition: "Private facts that tell strangers who you are or where you live. Never share these online!",
+        term: "Private Information (PII)",
+        definition: "Private details about you that you should NEVER share online with strangers.",
         example: "Full name, home address, phone number, school name, and passwords."
       },
       {
         category: "Online Safety",
-        term: "Super-Strong Secret Password",
-        definition: "A long, hard-to-guess password that mixes words, numbers, and symbols like a lock on your door.",
+        term: "Strong Password",
+        definition: "A long, hard-to-guess password that mixes words, numbers, and symbols.",
         example: "Green$Taco#2026 is much stronger than 123456."
       },
       {
         category: "Online Safety",
-        term: "Your Online Trail (Digital Footprint)",
-        definition: "The trail of clues you leave behind online (websites you visit, posts, and photos) that can stay there forever.",
+        term: "Digital Footprint",
+        definition: "The trail of clues you leave behind online (searches, posts, photos) that can stay forever.",
         example: "Always think before you post or click!"
       },
       {
@@ -526,36 +850,36 @@
       {
         category: "Typing & Shortcuts",
         term: "Home Row Keys",
-        definition: "The home base where your fingers rest: A S D F (left hand) and J K L ; (right hand).",
-        example: "F and J have tiny bumps so your pointer fingers can find them without looking."
+        definition: "The middle row where your fingers rest: A S D F (left hand) and J K L ; (right hand).",
+        example: "F and J have little raised bumps so you can find them without looking."
       },
       {
         category: "Typing & Shortcuts",
         term: "Shift Key vs. Caps Lock",
-        definition: "Hold Shift for ONE capital letter or top symbols (! or ?). Only tap Caps Lock for ALL CAPITAL LETTERS.",
+        definition: "Hold Shift for ONE capital letter or top symbols (! or ?). Only use Caps Lock for ALL CAPITAL LETTERS.",
         example: "Hold Shift + 1 to type an exclamation mark (!)."
       },
       {
         category: "Typing & Shortcuts",
         term: "Ctrl + B / Ctrl + I / Ctrl + U",
-        definition: "Key tricks for styling words: Ctrl + B makes letters Bold, Ctrl + I makes them Italic (slanted), and Ctrl + U Underlines them.",
-        example: "Highlight a title and press Ctrl + B to make it thick and dark!"
+        definition: "Text style shortcuts: Ctrl + B makes letters Bold, Ctrl + I makes letters slanted (Italic), and Ctrl + U Underlines words.",
+        example: "Highlight a title and press Ctrl + B to make it stand out!"
       },
       {
         category: "Typing & Shortcuts",
         term: "Ctrl + Z (Undo)",
-        definition: "The magic 'Undo' key trick that takes back your last step and fixes a mistake!",
-        example: "Accidentally erased a sentence? Press Ctrl + Z to bring it right back."
+        definition: "The magic 'Undo' shortcut that takes back your last step and fixes a mistake!",
+        example: "Accidentally deleted a sentence? Press Ctrl + Z to bring it back."
       },
       {
         category: "Typing & Shortcuts",
         term: "Ctrl + C and Ctrl + V",
-        definition: "Ctrl + C copies highlighted words or a picture; Ctrl + V pastes a copy into a new spot.",
+        definition: "Ctrl + C copies highlighted words or a picture; Ctrl + V pastes it into a new spot.",
         example: "Great for copying words without typing them all over again."
       },
       {
         category: "Typing & Shortcuts",
-        term: "Smart File Names",
+        term: "Smart File Naming",
         definition: "Naming your saved files clearly with no spaces using Topic_Name_Date.",
         example: "Tables_Maya_Nov16"
       },
@@ -563,59 +887,59 @@
       // Page Setup
       {
         category: "Page Setup",
-        term: "Tall Page (Portrait)",
-        definition: "A page standing up tall (taller than it is wide).",
-        example: "Best for stories, letters, and school reports."
+        term: "Portrait (Tall Page)",
+        definition: "A tall page setup where the paper stands up straight (taller than it is wide).",
+        example: "Best for stories, book reports, and letters."
       },
       {
         category: "Page Setup",
-        term: "Wide Page (Landscape)",
-        definition: "A page turned sideways so it is wide (wider than it is tall).",
-        example: "Best for classroom signs, posters, and awards."
+        term: "Landscape (Wide Page)",
+        definition: "A wide page setup where the paper is turned sideways (wider than it is tall).",
+        example: "Best for classroom signs, awards, and wide charts."
       },
       {
         category: "Page Setup",
-        term: "White Edge Borders (Margins)",
-        definition: "The blank white space around the edges of a page so words don't get cut off when you print.",
-        example: "Normal margins are 1 inch; Narrow margins are half an inch (0.5 in)."
+        term: "Margins",
+        definition: "The blank white safety border around the edges of a page so words don't get cut off when printed.",
+        example: "Normal margins are 1 inch; Narrow margins are 0.5 inches."
       },
       {
         category: "Page Setup",
         term: "Header & Footer",
-        definition: "Header is the top edge of the page (for Name & Date). Footer is the bottom edge of the page (for Page Numbers).",
-        example: "Headers and footers show up on every page automatically!"
+        definition: "Header is the top of the page (for Name, Date, Title). Footer is the bottom of the page (for Page Numbers).",
+        example: "Headers and footers automatically show up on every page!"
       },
 
       // Lists, Tables & Pictures
       {
         category: "Lists, Tables & Pictures",
-        term: "Bullet Points vs. Numbered List",
-        definition: "Use Bullet Points (•) when order does NOT matter; use a Numbered List (1, 2, 3) when order DOES matter.",
-        example: "Bullets for a packing list; Numbers for step-by-step recipe directions."
+        term: "Bulleted List vs. Numbered List",
+        definition: "Use a Bulleted List when order does NOT matter; use a Numbered List when order DOES matter.",
+        example: "Bullets for a packing list; Numbers for step-by-step instructions."
       },
       {
         category: "Lists, Tables & Pictures",
-        term: "Double Spacing & Tab Indent",
-        definition: "Double spacing leaves extra breathing room between lines of words. Press Tab ONCE to indent a paragraph.",
+        term: "Double Spacing (2.0) & Tab Indent",
+        definition: "Double spacing adds room between lines for easy reading. Press Tab ONCE to indent a paragraph.",
         example: "Never press the Spacebar 5 times to indent!"
       },
       {
         category: "Lists, Tables & Pictures",
         term: "Table: Columns, Rows & Cells",
-        definition: "A neat grid of boxes: Columns go up & down, Rows go side to side, and Cells are each little box.",
+        definition: "A grid made of boxes: Columns go up & down, Rows go side to side, and Cells are each single box.",
         example: "Press Tab inside a table to jump to the next box."
       },
       {
         category: "Lists, Tables & Pictures",
-        term: "Corner Dots (Resizing Pictures)",
-        definition: "Always drag the 4 corner dots (handles) when making a picture bigger or smaller so it doesn't look stretched or squished.",
-        example: "Dragging the side dots squishes the picture!"
+        term: "Corner Handles (Resizing Pictures)",
+        definition: "Always drag the 4 corner handles when making a picture bigger or smaller so it doesn't look stretched or squished.",
+        example: "Dragging side handles squishes the picture!"
       },
       {
         category: "Lists, Tables & Pictures",
         term: "Wrap Text",
-        definition: "A picture setting that lets your words wrap neatly around a picture just like a storybook or magazine.",
-        example: "Click the picture and choose 'Wrap text' to place it beside your story."
+        definition: "A picture setting that lets your sentences flow neatly around the side of a picture like a magazine.",
+        example: "Click the picture and choose 'Wrap text' to move it beside a paragraph."
       }
     ];
 
@@ -632,7 +956,89 @@
         "Page Setup",
         "Lists, Tables & Pictures"
       ];
-// ... existing code ...
+
+      const filterContainer = document.getElementById("flashcard-filters");
+      filterContainer.innerHTML = categories.map(cat => `
+        <button
+          onclick="filterFlashcards('${cat}')"
+          class="fc-filter-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
+            cat === activeCategory
+              ? "bg-indigo-600 text-white shadow-xs"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+          }"
+        >
+          ${cat}
+        </button>
+      `).join("");
+
+      renderFlashcard();
+    }
+
+    function filterFlashcards(category) {
+      activeCategory = category;
+      if (category === "All Topics") {
+        filteredFlashcards = [...allFlashcards];
+      } else {
+        filteredFlashcards = allFlashcards.filter(card => card.category === category);
+      }
+      currentCardIndex = 0;
+      initFlashcards();
+    }
+
+    function renderFlashcard() {
+      const inner = document.getElementById("flashcard-inner");
+      inner.classList.remove("is-flipped");
+
+      const card = filteredFlashcards[currentCardIndex];
+      document.getElementById("fc-front-term").textContent = card.term;
+      document.getElementById("fc-back-def").textContent = card.definition;
+      document.getElementById("fc-back-example").textContent = "💡 " + card.example;
+      document.getElementById("fc-category-badge").textContent = card.category;
+      document.getElementById("fc-counter").textContent = `Card ${currentCardIndex + 1} of ${filteredFlashcards.length}`;
+
+      const percent = ((currentCardIndex + 1) / filteredFlashcards.length) * 100;
+      document.getElementById("fc-progress-bar").style.width = `${percent}%`;
+    }
+
+    function flipCard() {
+      const inner = document.getElementById("flashcard-inner");
+      inner.classList.toggle("is-flipped");
+    }
+
+    function nextCard() {
+      currentCardIndex = (currentCardIndex + 1) % filteredFlashcards.length;
+      renderFlashcard();
+    }
+
+    function prevCard() {
+      currentCardIndex = (currentCardIndex - 1 + filteredFlashcards.length) % filteredFlashcards.length;
+      renderFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      for (let i = filteredFlashcards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredFlashcards[i], filteredFlashcards[j]] = [filteredFlashcards[j], filteredFlashcards[i]];
+      }
+      currentCardIndex = 0;
+      renderFlashcard();
+    }
+
+    // Keyboard arrow / space support when viewing Flashcards tab
+    document.addEventListener("keydown", (e) => {
+      const fcTab = document.getElementById("tab-flashcards");
+      if (fcTab.classList.contains("hidden")) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        flipCard();
+      } else if (e.code === "ArrowRight") {
+        nextCard();
+      } else if (e.code === "ArrowLeft") {
+        prevCard();
+      }
+    });
+
     /* ---------------------------------------------------------------------
        3. PRACTICE TEST DATA & LOGIC (20 Kid-Friendly Questions)
        --------------------------------------------------------------------- */
@@ -640,94 +1046,94 @@
       // Unit 1: Computer Parts (4 questions)
       {
         unit: "Unit 1: Computer Parts",
-        question: "Which part is called the 'brain' of the computer because it thinks, does math, and tells the other parts what to do?",
-        options: ["The Screen (Monitor)", "The Computer's Brain (CPU)", "The Printer", "The Mouse"],
+        question: "Which computer part is called the 'brain' of the computer because it thinks and follows your clicks?",
+        options: ["The Monitor", "The CPU (The Computer's Brain)", "The Printer", "The Mouse"],
         correctIndex: 1,
-        explanation: "The CPU is the little chip inside that acts as the computer's brain and tells all the other parts what to do!"
+        explanation: "The CPU is the brain of the computer that follows instructions and tells all the other parts what to do."
       },
       {
         unit: "Unit 1: Computer Parts",
-        question: "Which type of memory is like a backpack that keeps your stories and pictures saved even when the computer is turned OFF?",
-        options: ["Saving Space (Hard Drive)", "Working Memory (RAM)", "The Keyboard", "The Speakers"],
+        question: "Which type of memory is long-term and keeps your files saved even when the computer is turned OFF?",
+        options: ["Storage (Hard Drive / SSD)", "RAM (Short-Term Memory)", "The Keyboard", "The Speakers"],
         correctIndex: 0,
-        explanation: "Saving Space (Hard Drive) keeps your files safe even when the power is turned off. Working Memory (RAM) wipes clean when you shut down!"
+        explanation: "Storage (Hard Drive or SSD) saves your files permanently, even when the power is turned off. RAM clears out when you shut down."
       },
       {
         unit: "Unit 1: Computer Parts",
-        question: "Which of these tools is an INPUT part that sends your voice INTO the computer?",
-        options: ["Printer", "Speakers", "Microphone", "Screen (Monitor)"],
+        question: "Which of these tools is an INPUT part that sends information INTO the computer?",
+        options: ["Printer", "Speakers", "Microphone", "Monitor"],
         correctIndex: 2,
-        explanation: "A Microphone sends your voice INTO the computer, making it an Input part!"
+        explanation: "A Microphone sends your voice INTO the computer, making it an Input part."
       },
       {
         unit: "Unit 1: Computer Parts",
-        question: "A printer, speakers, and a screen are all examples of what kind of computer part?",
-        options: ["Input Parts", "Output Parts", "Saving Drives", "Secret Passwords"],
+        question: "A printer, speakers, and a monitor are all examples of what kind of part?",
+        options: ["Input Parts", "Output Parts", "Storage Drives", "Passwords"],
         correctIndex: 1,
-        explanation: "Output parts bring pictures, sound, or paper OUT of the computer to you."
+        explanation: "Output parts send information OUT of the computer so you can see or hear it."
       },
 
       // Unit 2: Online Safety (4 questions)
       {
         unit: "Unit 2: Online Safety",
-        question: "What are 'Private Facts About You' (PII), and what should you do with them?",
+        question: "What is Private Information (PII), and why should you protect it?",
         options: [
-          "Fun stickers — share them with everyone online",
-          "Private details like your full name, home address, and school — never share them online",
-          "Printer ink — check it before printing",
-          "Picture frames — put them around your photos"
+          "Public Internet Icons — share them with everyone",
+          "Private details about you (like your address or school) that you should never share online",
+          "Printer Ink Inside — check it before printing",
+          "Picture Image Insert — used for adding photos"
         ],
         correctIndex: 1,
-        explanation: "Private facts (like your full name, home address, school name, or phone number) must always be kept secret online!"
+        explanation: "Private Information (PII) includes your full name, home address, school, or phone number, and must be kept safe."
       },
       {
         unit: "Unit 2: Online Safety",
-        question: "Which of these is the STRONGEST secret password?",
+        question: "Which of these is the STRONGEST password?",
         options: ["12345678", "maya2026", "Green$Taco#2026", "password"],
         correctIndex: 2,
-        explanation: "Green$Taco#2026 is long and mixes uppercase letters, lowercase letters, numbers, and symbols!"
+        explanation: "Green$Taco#2026 is long and mixes capital letters, lowercase letters, numbers, and symbols!"
       },
       {
         unit: "Unit 2: Online Safety",
-        question: "What is your 'Online Trail' (Digital Footprint)?",
+        question: "What is a 'Digital Footprint'?",
         options: [
-          "A shoe print on the classroom floor",
-          "The trail of clues you leave behind online (websites you visit, posts, and photos)",
+          "A shoe print on the computer lab floor",
+          "The trail of clues you leave behind online (searches, posts, and photos)",
           "A button that turns off your screen",
           "A special mouse for drawing"
         ],
         correctIndex: 1,
-        explanation: "Every website you visit or photo you post leaves an Online Trail that can stay there forever!"
+        explanation: "Every website you visit or photo you post leaves a Digital Footprint that can stay online forever."
       },
       {
         unit: "Unit 2: Online Safety",
-        question: "If you see someone being treated meanly online and you help them and tell a trusted adult, you are being an:",
+        question: "If you see someone being bullied online and you help them and tell a trusted adult, you are being an:",
         options: ["Upstander", "Bystander", "Input Part", "Indent"],
         correctIndex: 0,
-        explanation: "An Upstander stands up to help! You support the person being hurt and tell a trusted adult right away."
+        explanation: "An Upstander stands up against cyberbullying by helping the person being hurt and getting help from a trusted adult."
       },
 
       // Unit 3: Typing & Shortcuts (4 questions)
       {
         unit: "Unit 3: Typing & Shortcuts",
-        question: "Which two Home Row keys have tiny bumps so your pointer fingers can find them without looking?",
+        question: "Which two Home Row keys have tiny raised bumps so your pointer fingers can find them without looking?",
         options: ["A and S", "F and J", "Q and P", "Z and M"],
         correctIndex: 1,
-        explanation: "The F and J keys have small bumps to guide your left and right pointer fingers back to Home Row."
+        explanation: "The F and J keys have small raised bumps to guide your left and right pointer fingers back to Home Row."
       },
       {
         unit: "Unit 3: Typing & Shortcuts",
         question: "You want to type just ONE capital letter at the start of a sentence. Which key should you hold down?",
         options: ["Caps Lock", "Shift", "Tab", "Ctrl"],
         correctIndex: 1,
-        explanation: "Hold Shift for one capital letter or a top symbol (like ! or ?). Only tap Caps Lock for ALL CAPITAL LETTERS."
+        explanation: "Hold Shift for one capital letter or a top symbol (like ! or ?). Only use Caps Lock for ALL CAPITAL LETTERS."
       },
       {
         unit: "Unit 3: Typing & Shortcuts",
-        question: "Oops! You accidentally erased a whole paragraph! Which key trick will UNDO your mistake?",
+        question: "Oops! You accidentally deleted a whole paragraph! Which shortcut will UNDO your mistake?",
         options: ["Ctrl + B", "Ctrl + U", "Ctrl + Z", "Ctrl + P"],
         correctIndex: 2,
-        explanation: "Ctrl + Z is the magic Undo trick—it takes back your last step right away!"
+        explanation: "Ctrl + Z is the Undo shortcut—it brings back what you just deleted right away!"
       },
       {
         unit: "Unit 3: Typing & Shortcuts",
@@ -740,51 +1146,51 @@
       // Unit 4: Page Setup (4 questions)
       {
         unit: "Unit 4: Page Setup",
-        question: "You are making a wide welcome sign for the classroom door. Which Page Direction should you pick?",
-        options: ["Tall Page (Portrait)", "Wide Page (Landscape)", "Footer", "Double Spacing"],
+        question: "You are making a wide sign for the computer lab door. Which Page Orientation should you pick?",
+        options: ["Portrait (Tall)", "Landscape (Wide)", "Footer", "Double Spacing"],
         correctIndex: 1,
-        explanation: "Wide Page (Landscape) turns the paper sideways, which is best for signs, posters, and awards."
+        explanation: "Landscape turns the page sideways (wide), which is best for signs, awards, and wide charts."
       },
       {
         unit: "Unit 4: Page Setup",
-        question: "What are 'White Edge Borders' (Margins) on a page?",
+        question: "What are 'Margins' on a page?",
         options: [
-          "The blank white space around the edges of a page so words don't get cut off",
+          "The blank white safety border around the edges of a page",
           "The colorful pictures at the bottom of a story",
           "The keys on the bottom row of the keyboard",
-          "The wires behind the screen"
+          "The wires behind the monitor"
         ],
         correctIndex: 0,
-        explanation: "Margins create a clean white border around the page so your words don't get cut off when you print."
+        explanation: "Margins create a clean white border around the page so words don't get cut off when printed."
       },
       {
         unit: "Unit 4: Page Setup",
-        question: "Where is the HEADER on a page, and what do we usually put inside it?",
+        question: "Where is the HEADER located on a page, and what do we usually put inside it?",
         options: [
-          "Bottom edge — for page numbers",
-          "Top edge — for your Name, Date, or Title",
+          "Bottom of the page — for page numbers",
+          "Top of the page — for your Name, Date, or Title",
           "Middle of the page — for stories",
           "Outside the computer"
         ],
         correctIndex: 1,
-        explanation: "Just like your head is at the top, the Header is at the top edge and shows your Name and Date on every page."
+        explanation: "Just like your head is at the top, the Header is at the top of the page and puts your Name and Date on every page."
       },
       {
         unit: "Unit 4: Page Setup",
-        question: "Which area at the BOTTOM edge of every page is best for Page Numbers?",
-        options: ["The Header", "The Footer", "The CPU", "Bullet Points"],
+        question: "Which area at the BOTTOM of every page is best for automatic Page Numbers?",
+        options: ["The Header", "The Footer", "The CPU", "The Bulleted List"],
         correctIndex: 1,
-        explanation: "The Footer sits at the bottom edge of the page and is the best spot for automatic page numbers."
+        explanation: "The Footer sits at the bottom of the page and is the best spot for automatic page numbers."
       },
 
       // Unit 5: Lists, Tables & Pictures (4 questions)
       {
         unit: "Unit 5: Lists, Tables & Pictures",
-        question: "When should you use a NUMBERED LIST (1, 2, 3) instead of Bullet Points?",
+        question: "When should you use a NUMBERED LIST (1, 2, 3) instead of a Bulleted List?",
         options: [
           "When the order does NOT matter (like a grocery list)",
-          "When the order DOES matter (like step-by-step recipe directions)",
-          "When you want to erase a picture",
+          "When the order DOES matter (like step-by-step recipe instructions)",
+          "When you want to delete a picture",
           "When you turn off the computer"
         ],
         correctIndex: 1,
@@ -800,29 +1206,137 @@
           "Hold Shift + Z"
         ],
         correctIndex: 1,
-        explanation: "Always press the Tab key once to make a neat, even indent at the start of a paragraph."
+        explanation: "Always press the Tab key once to create a neat, even paragraph indent."
       },
       {
         unit: "Unit 5: Lists, Tables & Pictures",
-        question: "In a Table, which part goes straight UP and DOWN (like tall pillars)?",
+        question: "In a Table, which part goes straight UP and DOWN?",
         options: ["A Row", "A Column", "A Margin", "A Footer"],
         correctIndex: 1,
         explanation: "Columns go straight up and down like tall pillars; Rows go flat from side to side."
       },
       {
         unit: "Unit 5: Lists, Tables & Pictures",
-        question: "How should you resize a picture so it does NOT look stretched or squished?",
+        question: "How should you make a picture bigger or smaller so it does NOT look stretched or squished?",
         options: [
-          "Drag one of the 4 corner dots (handles)",
-          "Drag the middle side dot",
+          "Drag one of the 4 corner handles",
+          "Drag the middle side handle",
           "Press Caps Lock",
           "Use Narrow Margins"
         ],
         correctIndex: 0,
-        explanation: "Dragging the 4 corner dots keeps the picture's true shape so it never looks stretched or squished!"
+        explanation: "Dragging the 4 corner handles keeps the picture's true shape so it never looks stretched or squished!"
       }
     ];
-// ... existing code ...
+
+    let userAnswers = new Array(quizQuestions.length).fill(null);
+
+    function renderQuiz() {
+      const container = document.getElementById("quiz-questions-container");
+      container.innerHTML = quizQuestions.map((q, qIdx) => {
+        const answered = userAnswers[qIdx] !== null;
+        const isCorrect = answered && userAnswers[qIdx] === q.correctIndex;
+
+        const optionsHtml = q.options.map((optText, optIdx) => {
+          let btnClasses = "border-slate-200 bg-slate-50 hover:bg-indigo-50/70 hover:border-indigo-300 text-slate-800";
+          let badgeText = String.fromCharCode(65 + optIdx); // A, B, C, D
+          let badgeClasses = "bg-white border border-slate-300 text-slate-700";
+
+          if (answered) {
+            if (optIdx === q.correctIndex) {
+              btnClasses = "border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold";
+              badgeClasses = "bg-emerald-600 text-white border-emerald-600";
+            } else if (optIdx === userAnswers[qIdx]) {
+              btnClasses = "border-rose-400 bg-rose-50 text-rose-950";
+              badgeClasses = "bg-rose-600 text-white border-rose-600";
+            } else {
+              btnClasses = "border-slate-200 bg-slate-50/50 text-slate-400 opacity-75";
+            }
+          }
+
+          return `
+            <button
+              onclick="selectQuizOption(${qIdx}, ${optIdx})"
+              ${answered ? "disabled" : ""}
+              class="w-full text-left p-3.5 rounded-xl border-2 transition flex items-center gap-3 ${btnClasses} ${answered ? "cursor-default" : "cursor-pointer"}"
+            >
+              <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${badgeClasses}">
+                ${badgeText}
+              </span>
+              <span class="text-sm sm:text-base">${optText}</span>
+            </button>
+          `;
+        }).join("");
+
+        const feedbackHtml = answered ? `
+          <div class="mt-4 p-3.5 rounded-xl text-sm ${
+            isCorrect
+              ? "bg-emerald-50 border border-emerald-200 text-emerald-900"
+              : "bg-amber-50 border border-amber-200 text-amber-950"
+          }">
+            <p class="font-bold mb-0.5">
+              ${isCorrect ? "✅ Great Job!" : "❌ Not quite — here's why:"}
+            </p>
+            <p>${q.explanation}</p>
+          </div>
+        ` : "";
+
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">
+                Question ${qIdx + 1} of ${quizQuestions.length}
+              </span>
+              <span class="text-xs font-semibold text-slate-500">${q.unit}</span>
+            </div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-4">${q.question}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${optionsHtml}
+            </div>
+            ${feedbackHtml}
+          </div>
+        `;
+      }).join("");
+
+      updateQuizStats();
+    }
+
+    function selectQuizOption(questionIndex, optionIndex) {
+      if (userAnswers[questionIndex] !== null) return;
+      userAnswers[questionIndex] = optionIndex;
+      renderQuiz();
+
+      // Automatically reveal final scorecard once all 20 questions are answered
+      if (userAnswers.every(ans => ans !== null)) {
+        showFinalScorecard();
+      }
+    }
+
+    function updateQuizStats() {
+      const answeredCount = userAnswers.filter(ans => ans !== null).length;
+      const correctCount = userAnswers.reduce((sum, ans, idx) => {
+        return sum + (ans === quizQuestions[idx].correctIndex ? 1 : 0);
+      }, 0);
+
+      document.getElementById("live-score-badge").textContent = `${correctCount} / ${quizQuestions.length}`;
+      document.getElementById("answered-count-text").textContent = answeredCount;
+    }
+
+    function showFinalScorecard() {
+      const correctCount = userAnswers.reduce((sum, ans, idx) => {
+        return sum + (ans === quizQuestions[idx].correctIndex ? 1 : 0);
+      }, 0);
+      const percent = Math.round((correctCount / quizQuestions.length) * 100);
+
+      let headline = "Keep Practicing — You've Got This!";
+      if (percent >= 90) headline = "Awesome Job! Computing Superstar!";
+      else if (percent >= 75) headline = "Great Work! You Are Ready for the Test!";
+      else if (percent >= 50) headline = "Good Try! Read the Highlighted Units Below.";
+
+      document.getElementById("final-grade-headline").textContent = headline;
+      document.getElementById("final-score-big").textContent = `${correctCount} / ${quizQuestions.length}`;
+      document.getElementById("final-percent-text").textContent = `${percent}% Score`;
+
       // Calculate score per unit
       const units = [
         "Unit 1: Computer Parts",
@@ -851,9 +1365,30 @@
               ${unitCorrect} / ${unitTotal}
             </p>
             <p class="text-xs mt-1 ${passed ? "text-emerald-800" : "text-amber-800"}">
-              ${passed ? "Awesome job! You know this topic!" : "Read this unit again in the Study Guide"}
+              ${passed ? "You know this well!" : "Read this unit in Study Guide"}
             </p>
           </div>
         `;
       }).join("");
-// ... existing code ...
+
+      document.getElementById("quiz-incomplete-msg").classList.add("hidden");
+      document.getElementById("final-scorecard").classList.remove("hidden");
+      document.getElementById("final-scorecard").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function resetQuiz() {
+      userAnswers = new Array(quizQuestions.length).fill(null);
+      document.getElementById("final-scorecard").classList.add("hidden");
+      document.getElementById("quiz-incomplete-msg").classList.remove("hidden");
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Initialize everything on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      initFlashcards();
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>
